@@ -8,3 +8,5 @@ class Player:
 
 	def blah(self):
 		pass 
+	def no(self):
+		pass
