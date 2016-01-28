@@ -10,3 +10,6 @@ class Player:
 		pass 
 	def no(self):
 		pass
+
+	def yes(self):
+		pass 
