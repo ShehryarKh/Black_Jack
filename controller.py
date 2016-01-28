@@ -5,3 +5,6 @@ class Player:
 
 	def pay(self):
 		pass 
+
+	def blah(self):
+		pass 
