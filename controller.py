@@ -1,5 +1,6 @@
 from view import View
 import pdb
+from random import shuffle
 from model import *
 
 class Game:
@@ -23,26 +24,62 @@ class Game:
 
 	def load_funs(self):
 		self.funds = self.user.load_funds()
-		print("hey you have " + str(self.funds) + "dollars" )
+		print("Welcome you have " + str(self.funds) +" "+ "dollars" )
 		#return self.user
 
 		
-class card:
-	def __init__(self,type,card):
+class Deck:
+	def __init__(self):
 		self.view = View()
-		self.type  = type
+		self.deck = []
+		self.create_deck()
 
+	def create_deck(self):
 
-	def cards(self,card):
-		deck=[]
-		value = ['1','2','3','4','5','6','7','8','9','10']
-		type_number= ['2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace']
-		#for i in
-		#deck.append((c,i))
+		# type of cards
+		type_card= ['C','D','H', 'S']
+		# each cards value
+		value = ['A','2','3','4','5','6','7','8','9','10','Jack','Queen','King']
+		# for loop that creats a list of tuples ('C','A') ,('C','2'), ('C','3') ... 
+		for i in type_card :
+			for v in value :
+				self.deck.append((i,v))
+		# shuffle the deck (from random import shuffel on top of file)
+		shuffle(self.deck)
 
-#class Deck
+	def pop(self):
+		return self.deck.pop()
+
+	def __str__(self):
+		return str(self.deck)
+
+class Dealer:
+	def __init__(self):
+		self.hand = []
+		self.deck = Deck()
+		
+
+	def give_1(self):
+		print(self.deck)
+		x = self.deck.pop()
+		print(x)
+
+	def give_2(self):
+		print (self.deck)
+		x = self.deck.pop()
+		self.hand.append(x)
+		y = self.deck.pop()
+		self.hand.append(y)
+		print (self.hand)
+		print(self.deck)
+
 
 
 game = Game()
 game.start()
 game.load_funs()
+cards = Deck()
+cards.create_deck()
+dealer = Dealer()
+dealer.give_1()
+dealer.give_2()
