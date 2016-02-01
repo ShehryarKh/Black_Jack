@@ -35,3 +35,24 @@ closest to 21. Ties go to the dealer.
     With your two cards, you have the option to hit or stay. Hit means draw one
 more card. Stay means you're happy with your score.
 			""")
+
+
+	def decision(self):
+		print( """
+what is your decision:
+[h] for hit
+[s] stay
+			""")
+
+	def d_card(self):
+		print("in the dealer's hand: ")
+	def p_card(self):
+		print("in your hand: ")
+
+	def dealer_hand(self):
+		print("+++++++++++++++++")
+		print(" the dealer hand has")
+
+	def player_hand(self):
+		print("+++++++++++++++++")
+		print("your hand has ")

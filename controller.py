@@ -55,23 +55,60 @@ class Deck:
 
 class Dealer:
 	def __init__(self):
-		self.hand = []
+		self.view=View()
+		self.dh = []
+		self.ph = []
 		self.deck = Deck()
-		
+
 
 	def give_1(self):
-		print(self.deck)
-		x = self.deck.pop()
-		print(x)
+		a = self.deck.pop()
+		return a
 
 	def give_2(self):
-		print (self.deck)
 		x = self.deck.pop()
-		self.hand.append(x)
 		y = self.deck.pop()
-		self.hand.append(y)
-		print (self.hand)
-		print(self.deck)
+		return x,y
+
+	def give_cards(self):
+		self.dh.append(self.give_2())
+		self.ph.append(self.give_2())
+
+	
+	def decision(self):
+		self.view.dealer_hand()
+		print(self.dh[0][0])
+		self.view.player_hand()
+		print(self.ph)
+		self.view.decision()
+		x = input("...")
+		if x == 'h':
+			self.ph.append(self.give_1())
+			self.decision()
+		return self.ph
+		if x =='s':
+			print (" alright u stay")
+
+	def logic(self):
+		print(self.ph[0][0])
+
+		
+	def dealer_logic(self):
+		print(self.dh[0][0])
+		print(self.dh)
+		#value = [x[1] for x in self.dh]
+
+		#x = value[i]+value[i+1]
+		#print(x)
+
+
+
+
+	
+
+
+
+
 
 
 
@@ -81,5 +118,8 @@ game.load_funs()
 cards = Deck()
 cards.create_deck()
 dealer = Dealer()
-dealer.give_1()
-dealer.give_2()
+dealer.give_cards()
+dealer.logic()
+dealer.decision()
+dealer.dealer_logic()
+
