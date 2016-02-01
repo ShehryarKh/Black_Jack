@@ -11,12 +11,17 @@ class Game:
 		self.view = View()
 		self.choice = ''
 		self.deck = Deck()
-		self.funds = None 
-		self.table = None
+		self.funds = 0 
+		self.table = 0
 		self.username = ''
 		self.user = UserDatabase()
 		self.quit = ["quit","q","QUIT"]
 		self.over = False
+		self.yh = '' 
+		self.yh_value = 0
+		self.hh = ''
+		self.hh_value = 0
+		
 
 	
 		
@@ -24,16 +29,17 @@ class Game:
 	def run(self):
 		while self.choice not in self.quit:
 			self.start()
-			self.load_funds()
-			self.menu()
-			self.play()
+			
+			
+			
 							
 	def start(self):
 		login = self.view.intro()
 		self.username = login["username"]
 
-		while self.user.check_account_status(login):
-			break
+		if self.user.check_account_status(login):
+			self.load_funds()
+			self.menu()
 		else:
 			self.view.no_account()
 			self.start()
@@ -45,11 +51,11 @@ class Game:
 		self.choice = self.view.menu(name = self.username,funds = self.funds)
 		if self.choice == "1":
 			while self.ask_amount_to_bet():
-				break 
+				break
+			self.play() 
 		elif self.choice == "2":
-			self.transfer()
-		elif self.choice == "3":
 			self.choice = "quit"
+			pass 
 		else:
 			self.menu()
 		
@@ -62,7 +68,7 @@ class Game:
 			if self.funds >= self.choice and self.choice >1:
 				if self.choice % 100 == 0 or self.choice % 50 == 0 or self.choice % 20 == 0 or self.choice % 10 == 0 or self.choice % 5 == 0:
 					self.funds -= self.choice
-					self.table = self.choice
+					self.table += self.choice 
 					return True 
 				elif self.funds < self.choice:
 						self.view.insufficient_funds(funds = self.funds)
@@ -76,11 +82,110 @@ class Game:
 			self.menu()
 
 	def play(self):
-		c = self.deck.hit()
-		self.view.dealer_hit(c["face"])
-		self.choice = "quit"
+		a = self.deck.hit()
+		a2 = self.deck.hit()
+		h = self.deck.hit()
+		self.yh_value = [a["value"],a2["value"]]
+		self.yh = [a["face"],a2["face"]]
+		self.hh_value = [h["value"]]
+		self.hh = [h["face"]]
+		self.view.player_hit(a["face"],a2["face"])
+		self.view.house_hit(h["face"])
+		self.view.hands(self.yh,self.hh)
+		self.hit()
 
-			
+
+	def hit(self):
+		self.choice = self.view.hit_stay()
+		while self.choice.lower() not in ["h","s"]:
+			self.choice = self.view.hit_stay()
+		if self.choice == "h":
+			x = self.deck.hit()
+			self.yh_value.append(x["value"])
+			self.yh.append(x["face"])
+			self.view.hands(self.yh,self.hh)
+			if self.check():
+				self.hit()
+			else:
+				self.you_bust()
+		elif self.choice == "s":
+			self.stay()
+
+	def stay(self):
+		
+		while sum(self.hh_value) < 17:
+			y = self.deck.hit()
+			self.hh_value.append(y["value"])
+			self.hh.append(y["face"])
+			self.view.hands(self.yh,self.hh)
+			while self.h_check():
+				break
+			self.stay()
+
+
+	def h_check(self):
+		player_total = sum(self.yh_value)
+		house_total = sum(self.hh_value)
+
+		if house_total > 21:
+			self.house_bust()
+		elif house_total >=17 and house_total < player_total:
+			self.player_win()
+			self.menu()
+		elif house_total >= 17 and house_total > player_total:
+			self.house_win()
+			self.menu()
+		elif house_total == player_total and house_total >= 17:
+			self.push()
+			self.menu()
+		elif house_total < 17:
+			return True 
+
+
+	def player_win(self):
+		print("you win")
+
+	def house_win(self):
+		print("house win")
+	
+
+	def push(self):
+		self.view.push()
+		self.funds += self.table 
+		self.update()
+		self.menu()
+
+	def house_bust(self):
+		self.view.house_bust()
+		win = self.table*2
+		self.funds += win 
+		self.update()
+		self.menu()
+		
+	def check(self):
+		if sum(self.yh_value) > 21:
+			return False
+		else:
+			return True 
+
+	def update(self):
+		pass 
+
+
+	def you_bust(self):
+		self.view.you_lose()
+		self.menu()
+
+
+
+		
+
+	
+		
+		
+		
+
+		
 
 		
 class Deck:

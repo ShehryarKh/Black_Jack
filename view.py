@@ -17,8 +17,7 @@ class View:
 \n{}, your available funds are ${}.
 
 	[1] Play BlackJack
-	[2] Transfer funds
-	[3] Quit
+	[2] Quit
 
 
 """.format(name,funds))
@@ -47,18 +46,60 @@ class View:
 	    Bet a valid number please!
 		""")	
 
-	def dealer_hit(self, face):
+	def player_hit(self,a,a2):
+		print("Your two cards are")
+		for x in [".",".\n"]:
+			time.sleep(.45)
+			print(x)
+		print(a + " & " + a2)
+
+	def house_hit(self,card):
 		print("House card is")
+		for x in [".",".\n"]:
+			time.sleep(.45)
+			print(x)
+		print(card)
+		
+
+	def blackjack(self):
+		print("You got Blackjack!")
+
+
+	def hands(self,yh,hh):
+		for x in [".",".\n"]:
+			time.sleep(.45)
+			print(x)
+		print(
+"""
+Your hand: 			
+{}                 								
+ 
+House hand:
+{}                    
+
+""".format(yh,hh))
+
+			
+	def hit_stay(self):
+		choice = input("[h] hit [s] stay:")
+		return choice
+
+	def hit(self,card):
 		for x in [".",".",".\n"]:
 			time.sleep(.45)
 			print(x)
-		print(face)
-		
-
-	
-		
+		print(card)
 
 
 
+	def you_lose(self):
+		print("BUST!")
+		print("LOSER!!!")
 
+	def house_bust(self):
+		print("The House BUST!")
+		print("YOU WIN!")
 
+	def push(self):
+		print("Push")
+		print("You win back your bet")
