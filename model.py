@@ -44,4 +44,14 @@ class UserDatabase:
 			balance = row[0]
 			return balance 
 
+	def update_funds(self,funds):
+		conn = sqlite3.connect(self.file_name)
+		cursor = conn.cursor()
 
+		cursor.execute(
+			"""
+			UPDATE Users SET funds = ? WHERE username = ? AND password = ?;
+			""",(funds,self.username,self.password))
+
+		conn.commit()
+		conn.close()

@@ -90,6 +90,12 @@ House hand:
 			print(x)
 		print(card)
 
+	def you_win(self):
+		print("YOU WIN !")
+
+	def house_win(self):
+		print("House wins")
+
 
 
 	def you_lose(self):
